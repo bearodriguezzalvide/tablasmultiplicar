@@ -1,0 +1,16 @@
+{
+  "name": "Tablas Mágicas",
+  "short_name": "Tablas Mágicas",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#ffd6e7",
+  "theme_color": "#6b2fa0",
+  "icons": [
+    {
+      "src": "unicornio1.jpg",
+      "sizes": "any",
+      "type": "image/jpeg"
+    }
+  ]
+}
