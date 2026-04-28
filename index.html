@@ -226,15 +226,6 @@
             object-fit: contain;
             transition: filter 0.35s ease;
         }
-        .pokemon-display {
-            position: absolute;
-            top: 0; left: 0;
-            width: 100%; height: 100%;
-            display: none;
-            align-items: center;
-            justify-content: center;
-            font-size: clamp(55px, 8vh, 78px);
-        }
         .cage-overlay {
             position: absolute;
             top: 0; left: 0;
@@ -352,15 +343,15 @@
 <!-- ========== CONFIG SCREEN ========== -->
 <div id="config-screen" class="screen active">
     <div style="font-size:clamp(2em,6vw,4em);" id="start-emoji">🦄✨🦄</div>
-    <div class="title" id="start-title">Rescatadoras<br>de Unicornios</div>
+    <div class="title" id="start-title">Tablas de<br>Multiplicar</div>
 
     <div class="config-card">
         <div class="cfg-row">
             <span class="cfg-label">👤 Jugadora:</span>
             <input type="text" id="cfg-name" value="Lola" class="cfg-input">
-            <span class="cfg-label" style="display:none;">🎮 Tema:</span>
-            <button id="btn-uni"  class="theme-btn active" onclick="setTheme('unicornio')" style="display:none;">🦄 Unicornios</button>
-            <button id="btn-poke" class="theme-btn"        onclick="setTheme('pokemon')"  style="display:none;">⚾ Pokémon</button>
+            <span class="cfg-label">🎮 Tema:</span>
+            <button id="btn-uni"  class="theme-btn active" onclick="setTheme('unicornio')">🦄 Unicornios</button>
+            <button id="btn-poke" class="theme-btn"        onclick="setTheme('pokemon')" ><img src="pokemonimg/pokeball.png" style="width:1.1em;height:1.1em;object-fit:contain;vertical-align:middle;"> Pokémon</button>
         </div>
         <div class="cfg-row" style="flex-wrap:wrap; gap:6px;">
             <span class="cfg-label">✖️ Tablas:</span>
@@ -399,14 +390,14 @@
 <!-- ========== START SCREEN (portada) ========== -->
 <div id="start-screen" class="screen">
     <div style="font-size:clamp(2em,6vw,4em);">🦄✨🦄</div>
-    <div class="title">Rescatadoras<br>de Unicornios</div>
+    <div class="title">Tablas de<br>Multiplicar</div>
 
     <div style="font-size:clamp(0.95em,2.2vw,1.15em); color:#7e22ce; background:rgba(255,255,255,0.65); padding:9px 22px; border-radius:18px; text-align:center;">
         <span id="portada-name">Lola</span>, la seño <strong>María Jesús</strong> te manda una misión! 💜<br>
         <span style="font-size:0.9em; color:#e056a0;" id="start-mission">¡Rescata a todos los unicornios respondiendo bien!</span>
     </div>
 
-    <div id="start-pokemon-emoji" style="display:none; font-size:clamp(70px,12vh,110px);">⚾</div>
+    <img id="start-pokemon-emoji" src="pokemonimg/pokeball.png" style="display:none; width:clamp(70px,12vh,110px); height:clamp(70px,12vh,110px); object-fit:contain;" alt="pokeball">
 
     <button class="btn-main" onclick="startGame()">✨ ¡Empezar la misión! ✨</button>
 </div>
@@ -429,9 +420,10 @@
     <div class="timer-bar-wrap"><div id="timer-bar"></div></div>
 
     <div class="cage-container">
-        <img id="unicorn-img" src="unicornio1.png" class="unicorn-img" alt="unicornio">
-        <div id="pokemon-display" class="pokemon-display">🐱</div>
-        <svg id="cage-overlay" class="cage-overlay" viewBox="0 0 160 185"></svg>
+        <img id="unicorn-img" src="unicornio1.jpg" class="unicorn-img" alt="unicornio">
+        <img id="pokemon-img" src="pokemonimg/pokemon1.png" class="unicorn-img" alt="pokemon" style="display:none;">
+        <svg id="cage-svg" class="cage-overlay" viewBox="0 0 160 185"></svg>
+        <img id="pokeball-img" src="pokemonimg/pokeball.png" class="cage-overlay" style="display:none; object-fit:contain; background:linear-gradient(135deg, #fff9c4 0%, #ffcc80 50%, #ffab91 100%);" alt="pokeball">
     </div>
 
     <div class="question-box">
@@ -467,7 +459,7 @@ const THEMES = {
         bg:       'linear-gradient(135deg, #ffd6e7 0%, #c8b6e2 50%, #a8d8ea 100%)',
         icon:     '🦄',
         action:   'rescatados',
-        title:    'Rescatadoras<br>de Unicornios',
+        title:    'Tablas de<br>Multiplicar',
         mission:  '¡Rescata a todos los unicornios respondiendo bien!',
         startEmoji: '🦄✨🦄',
         endTitle: '¡Misión completada! 🎉',
@@ -488,27 +480,19 @@ const THEMES = {
     },
     pokemon: {
         bg:       'linear-gradient(135deg, #fff9c4 0%, #ffcc80 50%, #ffab91 100%)',
-        icon:     '⚾',
+        icon:     '⚪',
+        iconImg:  'pokemonimg/pokeball.png',
         action:   'capturados',
-        title:    '¡Atrapa<br>Pokémon!',
+        title:    'Tablas de<br>Multiplicar',
         mission:  '¡Captura Pokémon respondiendo las operaciones!',
-        startEmoji: '⚾✨⚾',
         endTitle: '¡Pokémon atrapados! 🎉',
-        cheers:   ['⚡ ¡Atrapado!','🔥 ¡Capturado!','💫 ¡Pillado!','🎯 ¡Perfecto!','⚾ ¡Genial!','🌟 ¡Campeona!','✨ ¡Maestra!','💥 ¡Increíble!','🏆 ¡Gran captura!','⚡ ¡Pokémaestra!'],
+        cheers:   ['⚡ ¡Atrapado!','🔥 ¡Capturado!','💫 ¡Pillado!','🎯 ¡Perfecto!','🌟 ¡Genial!','🌟 ¡Campeona!','✨ ¡Maestra!','💥 ¡Increíble!','🏆 ¡Gran captura!','⚡ ¡Pokémaestra!'],
         wrongMsg: (ans) => `😤 ¡Escapó! Era el ${ans}`,
         timeMsg:  '⏰ ¡Se acabó el tiempo!',
-        replayBtn:'⚾ ¡Jugar de nuevo!',
-        cageHTML: `
-            <path d="M8,95 A72,72 0 0,1 152,95" fill="rgba(231,76,60,0.38)"/>
-            <path d="M8,95 A72,72 0 0,0 152,95" fill="rgba(240,240,240,0.22)"/>
-            <circle cx="80" cy="95" r="72" fill="none" stroke="#c0392b" stroke-width="5"/>
-            <line x1="8" y1="95" x2="152" y2="95" stroke="#2c3e50" stroke-width="6"/>
-            <circle cx="80" cy="95" r="20" fill="rgba(255,255,255,0.92)" stroke="#2c3e50" stroke-width="5"/>
-            <circle cx="80" cy="95" r="10" fill="rgba(180,180,180,0.85)"/>`,
+        replayBtn:'🎮 ¡Jugar de nuevo!',
     }
 };
 
-const POKEMON_EMOJIS = ['🐱','🔥','💧','⚡','🌿','🦊','🐉','🦋','🦕','🐸','🦔','🦎','🐠','🦅','🐌','🐯','🦖','🦑','🐧','🌟','🦜','🐺','🦁','🐻','🦈','🐊','🦩','🦚','🐙','🦂'];
 
 // ---- EDITA AQUÍ: imágenes de unicornios ----
 // ---- EDITA AQUÍ: imágenes de unicornios ----
@@ -524,6 +508,26 @@ const UNICORN_IMAGES = [
     'unicornio9.jpg',
     'unicornio10.jpg',
 ];
+
+const POKEMON_IMAGES = [
+    'pokemonimg/pokemon1.png',
+    'pokemonimg/pokemon2.png',
+    'pokemonimg/pokemon3.png',
+    'pokemonimg/pokemon4.png',
+    'pokemonimg/pokemon5.png',
+    'pokemonimg/pokemon6.png',
+    'pokemonimg/pokemon7.png',
+    'pokemonimg/pokemon8.png',
+    'pokemonimg/pokemon9.png',
+    'pokemonimg/pokemon10.png',
+];
+
+function themeIcon(th, size) {
+    size = size || '1em';
+    return th.iconImg
+        ? `<img src="${th.iconImg}" style="width:${size};height:${size};object-fit:contain;vertical-align:middle;" alt="">`
+        : th.icon;
+}
 
 // ======================================================
 // GAME STATE + CONFIG
@@ -567,7 +571,8 @@ function setTheme(t) {
     document.body.style.background = th.bg;
     document.getElementById('start-title').innerHTML     = th.title;
     document.getElementById('start-mission').textContent = th.mission;
-    document.getElementById('start-emoji').textContent   = th.startEmoji;
+    const pb = themeIcon(th, '1em');
+    document.getElementById('start-emoji').innerHTML = th.iconImg ? `${pb}✨${pb}` : th.startEmoji;
     document.getElementById('start-pokemon-emoji').style.display = t === 'pokemon' ? 'block' : 'none';
 }
 
@@ -636,7 +641,7 @@ function startGame() {
     currentQ = 0; score = 0; canAnswer = true;
 
     document.body.style.background = th.bg;
-    document.getElementById('theme-icon').textContent  = th.icon;
+    document.getElementById('theme-icon').innerHTML    = themeIcon(th, '1em');
     document.getElementById('action-word').textContent = th.action;
     document.getElementById('q-total').textContent     = config.totalQ;
     document.getElementById('end-title').textContent   = th.endTitle;
@@ -648,16 +653,17 @@ function startGame() {
     for (let i = 0; i < config.totalQ; i++) {
         const d = document.createElement('div');
         d.className = 'uni-icon'; d.id = 'uni-' + i;
-        d.textContent = th.icon;
+        d.innerHTML = themeIcon(th, '1.2em');
         bar.appendChild(d);
     }
 
-    // Cage overlay
-    document.getElementById('cage-overlay').innerHTML = th.cageHTML;
-
-    // Character layers
-    document.getElementById('unicorn-img').style.display     = config.theme === 'unicornio' ? 'block' : 'none';
-    document.getElementById('pokemon-display').style.display = config.theme === 'pokemon'   ? 'flex'  : 'none';
+    // Cage overlay & character layers
+    const isPoke = config.theme === 'pokemon';
+    document.getElementById('unicorn-img').style.display  = isPoke ? 'none'  : 'block';
+    document.getElementById('pokemon-img').style.display  = isPoke ? 'block' : 'none';
+    document.getElementById('cage-svg').style.display     = isPoke ? 'none'  : 'block';
+    document.getElementById('pokeball-img').style.display = isPoke ? 'block' : 'none';
+    if (!isPoke) document.getElementById('cage-svg').innerHTML = th.cageHTML;
 
     showScreen('game-screen');
     startGlobalTimer();
@@ -677,11 +683,10 @@ function loadQuestion() {
     if (config.theme === 'unicornio') {
         document.getElementById('unicorn-img').src = UNICORN_IMAGES[currentQ % UNICORN_IMAGES.length];
     } else {
-        document.getElementById('pokemon-display').textContent =
-            POKEMON_EMOJIS[currentQ % POKEMON_EMOJIS.length];
+        document.getElementById('pokemon-img').src = POKEMON_IMAGES[currentQ % POKEMON_IMAGES.length];
     }
 
-    document.getElementById('cage-overlay').style.opacity = '1';
+    document.getElementById(config.theme === 'pokemon' ? 'pokeball-img' : 'cage-svg').style.opacity = '1';
 
     const options = shuffle([q.ans, ...wrongAnswers(q.ans)]);
     document.querySelectorAll('.btn-answer').forEach((btn, i) => {
@@ -712,7 +717,7 @@ function checkAnswer(btn) {
         score++;
         document.getElementById('feedback').textContent = th.cheers[currentQ % th.cheers.length];
         document.getElementById('feedback').style.color = '#2e7d32';
-        document.getElementById('cage-overlay').style.opacity = '0';
+        document.getElementById(config.theme === 'pokemon' ? 'pokeball-img' : 'cage-svg').style.opacity = '0';
         playMagicSound();
         setTimeout(() => {
             document.getElementById('uni-' + currentQ).classList.add('rescued');
@@ -747,9 +752,9 @@ function endGame() {
     const name = document.getElementById('cfg-name').value.trim() || 'Jugadora';
     const pct  = score / config.totalQ;
 
-    document.getElementById('final-icons').textContent = th.icon.repeat(score) || '😢';
-    document.getElementById('final-score').textContent =
-        `${name}: ${score} de ${config.totalQ} ${th.icon}`;
+    const ico = themeIcon(th, '1.6em');
+    document.getElementById('final-icons').innerHTML  = score > 0 ? ico.repeat(score) : '😢';
+    document.getElementById('final-score').innerHTML  = `${name}: ${score} de ${config.totalQ} ${themeIcon(th, '1em')}`;
 
     let msg;
     if (pct === 1)       msg = '¡¡PERFECTO!! ¡Eres la mejor del universo! 👑🌟';
